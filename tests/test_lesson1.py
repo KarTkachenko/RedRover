@@ -1,28 +1,12 @@
 import time
-from selenium import webdriver
 from selenium.webdriver.common.by import By
+from pages.base_page import BasePage as bp
 
 
 class Test:
-    base_url = 'https://www.saucedemo.com/'
-    correct_login = 'standard_user'
-    correct_password = 'secret_sauce'
-
-    def test_login_page(self, driver):
-        self.login(driver)
-        assert driver.current_url == 'https://www.saucedemo.com/inventory.html', 'url не соответствует ожидаемому'
-
-    def test_login_page_incorrect(self, driver):
-        driver.get(self.base_url)
-        driver.find_element(By.XPATH, "//input[@id='user-name']").send_keys('standart_user')
-        driver.find_element(By.XPATH, "//input[@id='password']").send_keys('secret_sau')
-        driver.find_element(By.XPATH, "//input[@id='login-button']").click()
-        assert driver.find_element(By.XPATH,
-                                   "//h3[@data-test='error']").text == 'Epic sadface: Username and password do not match any user in this service'
-        # assert browser.current_url == 'https://www.saucedemo.com/', 'url не соответствует ожиданиям'
 
     def test_add_item(self, driver):
-        self.login(driver)
+        bp.login(driver)
         self.add_to_cart(driver)
         assert driver.find_element(By.XPATH, "//div[@class='inventory_item_name']").text == 'Sauce Labs Backpack'
 
@@ -120,9 +104,3 @@ class Test:
     def add_to_cart(driver):
         driver.find_element(By.XPATH, "//button[@id='add-to-cart-sauce-labs-backpack']").click()
         driver.find_element(By.XPATH, "//span[@class='shopping_cart_badge']").click()
-
-    def login(self, driver):
-        driver.get(self.base_url)
-        driver.find_element(By.XPATH, "//input[@id='user-name']").send_keys(self.correct_login)
-        driver.find_element(By.XPATH, "//input[@id='password']").send_keys(self.correct_password)
-        driver.find_element(By.XPATH, "//input[@id='login-button']").click()
