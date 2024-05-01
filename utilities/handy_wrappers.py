@@ -1,4 +1,8 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import *
+from traceback import print_stack
 
 
 class HandyWrappers:
@@ -34,6 +38,16 @@ class HandyWrappers:
             print('Element not found')
         return element
 
+    def element_click(self, locator, locatorType='id'):
+        try:
+            element = self.get_element(locator, locatorType)
+            element.click()
+            print('Clicked on the element with locator: ' + locator
+                  + ' locatorType: ' + locatorType)
+        except:
+            print('Cannot click on the element')
+            print_stack()
+
     def is_element_present(self, locator, by_type):
         try:
             element = self.driver.find_element(by_type, locator)
@@ -57,3 +71,21 @@ class HandyWrappers:
         except:
             print('The element is NOT found')
             return False
+
+    def wait_for_element(self, locator, locatorType='id',
+                         timeout=10, pollFrequency=0.5):
+        element = None
+        try:
+            byType = self.get_by_type(locatorType)
+            print('Waiting for maximum ::' + str(timeout) +
+                  ' :: seconds for element to be clickable')
+            wait = WebDriverWait(self.driver, 10, poll_frequency=1,
+                                 ignored_exceptions=[NoSuchElementException,
+                                                     ElementNotVisibleException,
+                                                     ElementNotSelectableException])
+            element = wait.until(EC.element_to_be_clickable((byType, 'stopFilter_stops-0')))
+            print('Element appeared on the web page')
+        except:
+            print('Element not appeared on the web page')
+            print_stack()
+        return element
