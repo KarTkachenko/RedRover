@@ -1,16 +1,22 @@
 import pytest
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service
+
 
 base_url = 'https://www.saucedemo.com/'
 
 
 @pytest.fixture
 def driver():
-    service = Service(executable_path=ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service)
-    driver.get(base_url)
+    driver = webdriver.Chrome()
     driver.maximize_window()
+    driver.implicitly_wait(3)
+    driver.get(base_url)
     yield driver
     driver.quit()
+
+
+@pytest.fixture(scope='module')
+def messages():
+    print('Start')
+    yield
+    print('Stop!!!')

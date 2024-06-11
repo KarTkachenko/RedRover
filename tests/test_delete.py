@@ -4,7 +4,7 @@ from pages.cart_page import CartPage
 
 
 class TestDelete:
-    bp = BasePage()
+    bp = BasePage(driver)
     cp = CartPage
 
     def test_delete_item_from_card(self, driver):

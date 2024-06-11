@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from base.base_page import BasePage
 from pages.filters import Sort
+import time
 
 
 class TestFilter:
@@ -9,8 +10,11 @@ class TestFilter:
 
     def test_filter_a(self, driver):
         self.bp.login(driver)
+        time.sleep(2)
         self.s.sort_filter(driver)
+        time.sleep(2)
         self.s.filter_a_z(driver)
+        time.sleep(2)
         assert driver.find_element(By.XPATH,
                                    "//div[@class='inventory_list']/div[1]//div[contains(@class,'inventory_item_name')]").text == 'Sauce Labs Backpack'
 
